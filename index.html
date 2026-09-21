@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en" data-theme="system" data-contrast="normal" data-textsize="normal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CAC Goodworks Audio Translator</title>
+  <meta name="description" content="Translate spoken audio and video into other languages, including Yoruba. Free, open-source and private: processing happens on your device.">
+  <meta name="theme-color" content="#0b5d3b">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: data:; connect-src 'self' https://api.mymemory.translated.net; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="CAC Audio Translator">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme-init.js"></script>
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="i-brand" viewBox="0 0 24 24"><path d="M12 2.5v19"/><path d="M2.5 11l2.4-2.4 2.3 5 2.4-8 2.4 10 2.3-6.5 2.4 4 2.4-2.1"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="3.4"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.6" fill="currentColor"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12M7 11l5 5 5-5M4 19h16"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></symbol>
+  <symbol id="i-translate" viewBox="0 0 24 24"><path d="M4 6h9M8.5 4v2M6 6c0 4 3 7 6 8M11 6c0 4-3 7-7 9M13 20l4-9 4 9M14.5 17h5"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.5-5.8M4 4v4h4M12 8v4l3 2"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.7v.1"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9a13 13 0 0 1 18 0M6 12.5a8.5 8.5 0 0 1 12 0M9 16a4 4 0 0 1 6 0M12 19.5v.1"/></symbol>
+  <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M3 3l18 18M8.5 8.8A13 13 0 0 0 3 9M6 12.5a8.5 8.5 0 0 1 3.5-2M15 16a4 4 0 0 0-4-1.2M12 19.5v.1M14 6.2A13 13 0 0 1 21 9M16.5 10.2a8.5 8.5 0 0 1 1.5 2.3"/></symbol>
+  <symbol id="i-install" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M12 8v6M9.5 11.8L12 14.3l2.5-2.5M10.5 18h3"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 0 1 5 1c0 1.7-2.5 2-2.5 3.5M12 17v.1"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14-4L4 9M4 4v5h5M4 13a8 8 0 0 0 14 4l2-2M20 20v-5h-5"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6L8 10zM16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6L8 10zM16 9.5l5 5M21 9.5l-5 5"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/><rect x="10" y="10" width="4" height="4"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10.5l5-3v9l-5-3z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="app">
+
+  <!-- Sidebar (tablet and desktop) -->
+  <aside class="sidebar" aria-label="App">
+    <a class="brand" href="#/home" aria-label="CAC Goodworks Audio Translator, home">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-brand"/></svg></span>
+      <span class="brand-text">
+        <span class="brand-name">CAC Goodworks</span>
+        <span class="brand-sub">Audio Translator</span>
+      </span>
+    </a>
+    <nav class="side-nav" aria-label="Main">
+      <a href="#/home" data-nav="home"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
+      <a href="#/translate" data-nav="translate"><svg class="icon" aria-hidden="true"><use href="#i-translate"/></svg>Translate</a>
+      <a href="#/history" data-nav="history"><svg class="icon" aria-hidden="true"><use href="#i-history"/></svg>History</a>
+      <a href="#/models" data-nav="models"><svg class="icon" aria-hidden="true"><use href="#i-cpu"/></svg>AI models</a>
+      <a href="#/settings" data-nav="settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>Settings</a>
+      <a href="#/help" data-nav="help"><svg class="icon" aria-hidden="true"><use href="#i-help"/></svg>Help</a>
+      <a href="#/about" data-nav="about"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>About and privacy</a>
+    </nav>
+    <div class="side-foot">
+      <span class="status-chip" data-net-chip></span>
+      <button class="btn btn-gold btn-block" type="button" data-install hidden>Install app</button>
+      <p class="side-note">Processing happens on your device.</p>
+    </div>
+  </aside>
+
+  <div class="content">
+    <!-- Top bar (phones) -->
+    <header class="topbar">
+      <a class="brand brand-mini" href="#/home" aria-label="CAC Goodworks Audio Translator, home">
+        <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-brand"/></svg></span>
+        <span class="brand-text"><span class="brand-name">CAC Audio Translator</span></span>
+      </a>
+      <span class="status-chip" data-net-chip></span>
+      <button class="icon-btn icon-btn-light" type="button" data-install hidden aria-label="Install app"><svg class="icon" aria-hidden="true"><use href="#i-install"/></svg></button>
+    </header>
+
+    <div id="update-banner" class="banner banner-update" role="status" hidden>
+      <span>New version available.</span>
+      <button class="btn btn-small" type="button" id="btn-update">Update</button>
+    </div>
+
+    <main id="main" tabindex="-1">
+
+      <!-- ============ HOME ============ -->
+      <section id="view-home" class="view" data-view="home" aria-labelledby="home-title" hidden>
+        <div class="hero">
+          <div class="hero-copy">
+            <h1 id="home-title">CAC Goodworks Audio Translator</h1>
+            <p class="tagline">Listen • Translate • Understand</p>
+            <p class="lede">Turn spoken audio or video into text, translate it, and hear it in another language. Yoruba is supported, and your recordings stay on your device.</p>
+          </div>
+          <div class="hero-wave" aria-hidden="true">
+            <div class="hero-bars" id="hero-bars"></div>
+            <div class="hero-pair"><span id="hero-from">English</span><span class="hero-arrow"></span><span id="hero-to">Yoruba</span></div>
+          </div>
+        </div>
+
+        <div class="source-grid" role="group" aria-label="Choose how to start">
+          <button class="source-card" type="button" id="home-record">
+            <span class="source-ico"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg></span>
+            <span class="source-title">Record audio</span>
+            <span class="source-desc">Use your microphone to capture a message or a sermon.</span>
+          </button>
+          <button class="source-card" type="button" id="home-upload">
+            <span class="source-ico"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span>
+            <span class="source-title">Upload audio or video</span>
+            <span class="source-desc">MP3, WAV, M4A, WhatsApp voice notes, MP4 and more.</span>
+          </button>
+          <button class="source-card" type="button" id="home-youtube">
+            <span class="source-ico"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg></span>
+            <span class="source-title">YouTube link</span>
+            <span class="source-desc">See how to use a YouTube video with this app.</span>
+          </button>
+        </div>
+
+        <div class="card home-langs">
+          <div class="lang-row">
+            <label class="field"><span class="field-label">Translate from</span><select class="js-src" aria-label="Translate from"></select></label>
+            <button class="icon-btn icon-btn-ring js-swap" type="button" aria-label="Swap languages"><svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg></button>
+            <label class="field"><span class="field-label">Translate to</span><select class="js-tgt" aria-label="Translate to"></select></label>
+          </div>
+          <button class="btn btn-primary btn-large" type="button" id="home-go">Translate audio</button>
+          <p class="hint" id="home-status" aria-live="polite"></p>
+        </div>
+
+        <ul class="assure">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg><span>Your audio is processed locally whenever supported.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-wifi-off"/></svg><span>Works offline once the AI models you need are downloaded.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-cpu"/></svg><span>Free and open source. No account, no subscription.</span></li>
+        </ul>
+      </section>
+
+      <!-- ============ TRANSLATE ============ -->
+      <section id="view-translate" class="view" data-view="translate" aria-labelledby="translate-title" hidden>
+        <div class="view-head">
+          <h1 id="translate-title" class="view-title">Translate</h1>
+        </div>
+
+        <!-- Step A: choose an input -->
+        <section id="panel-input" class="card dropzone" aria-labelledby="dz-title">
+          <div class="dz-inner">
+            <span class="dz-ico"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span>
+            <h2 id="dz-title">Upload audio or video</h2>
+            <p class="dz-hint">Drop a file here, or choose a source below.</p>
+            <div class="btn-row btn-row-center">
+              <button class="btn btn-primary" type="button" id="btn-upload"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Upload file</button>
+              <button class="btn" type="button" id="btn-record"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Record audio</button>
+              <button class="btn" type="button" id="btn-device"><svg class="icon" aria-hidden="true"><use href="#i-folder"/></svg>Choose from device</button>
+              <button class="btn" type="button" id="btn-youtube"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg>YouTube URL</button>
+            </div>
+            <p class="formats">MP3, WAV, M4A, AAC, OGG, OPUS, FLAC, MP4, WEBM, MKV. Up to 300 MB. WhatsApp voice notes are supported.</p>
+            <button class="link-btn" type="button" id="btn-text-mode"><svg class="icon" aria-hidden="true"><use href="#i-type"/></svg>Or type or paste text to translate without audio</button>
+          </div>
+        </section>
+
+        <!-- Recorder -->
+        <section id="panel-record" class="card" hidden aria-labelledby="rec-title">
+          <div class="panel-head">
+            <h2 id="rec-title">Record audio</h2>
+            <button class="btn btn-ghost btn-small" type="button" id="rec-back">Back</button>
+          </div>
+          <p class="hint" id="rec-perm"></p>
+          <div class="rec-stage">
+            <div class="rec-timer" id="rec-timer" role="timer" aria-live="off">0:00</div>
+            <div class="rec-state" id="rec-state" aria-live="polite">Ready to record</div>
+            <div class="meter" aria-hidden="true"><div class="meter-fill" id="rec-meter"></div></div>
+          </div>
+          <div class="btn-row btn-row-center">
+            <button class="btn btn-primary" type="button" id="rec-start"><svg class="icon" aria-hidden="true"><use href="#i-mic"/></svg>Start recording</button>
+            <button class="btn" type="button" id="rec-pause" hidden><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg>Pause</button>
+            <button class="btn" type="button" id="rec-resume" hidden><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Resume</button>
+            <button class="btn btn-danger" type="button" id="rec-stop" hidden><svg class="icon" aria-hidden="true"><use href="#i-stop"/></svg>Stop recording</button>
+          </div>
+          <div id="rec-review" hidden>
+            <audio id="rec-audio" controls preload="metadata" aria-label="Recorded audio preview"></audio>
+            <div class="btn-row btn-row-center">
+              <button class="btn btn-primary" type="button" id="rec-use">Use this recording</button>
+              <button class="btn" type="button" id="rec-again">Record again</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- YouTube -->
+        <section id="panel-youtube" class="card" hidden aria-labelledby="yt-title">
+          <div class="panel-head">
+            <h2 id="yt-title">YouTube link</h2>
+            <button class="btn btn-ghost btn-small" type="button" id="yt-back">Back</button>
+          </div>
+          <label class="field"><span class="field-label">YouTube URL</span>
+            <input id="yt-url" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…">
+          </label>
+          <div class="btn-row"><button class="btn btn-primary" type="button" id="yt-go">Process YouTube link</button></div>
+          <div id="yt-result" class="notice" role="status" hidden></div>
+        </section>
+
+        <!-- Reading a chosen file -->
+        <section id="panel-loading" class="card" hidden aria-live="polite">
+          <div class="skeleton skeleton-line w40"></div>
+          <div class="skeleton skeleton-wave"></div>
+          <p class="hint" id="loading-text">Reading your file…</p>
+          <div class="btn-row"><button class="btn btn-ghost btn-small" type="button" id="loading-cancel">Cancel</button></div>
+        </section>
+
+        <!-- Step B: languages and action -->
+        <section id="panel-langs" class="card langbar" hidden aria-label="Languages">
+          <div class="lang-row">
+            <label class="field"><span class="field-label">Translate from</span><select class="js-src" aria-label="Translate from"></select></label>
+            <button class="icon-btn icon-btn-ring js-swap" type="button" aria-label="Swap languages"><svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg></button>
+            <label class="field"><span class="field-label">Translate to</span><select class="js-tgt" aria-label="Translate to"></select></label>
+          </div>
+          <button class="btn btn-primary btn-large" type="button" id="btn-translate">Translate audio</button>
+        </section>
+
+        <!-- Progress -->
+        <section id="panel-progress" class="card progress-card" hidden aria-labelledby="prog-title">
+          <h2 id="prog-title">Working on it</h2>
+          <ol class="stages" id="stages"></ol>
+          <div id="prog-bar-host"></div>
+          <p class="prog-detail" id="prog-detail" aria-live="polite"></p>
+          <ul class="chunks" id="chunks" aria-label="Audio pieces" hidden></ul>
+          <div id="prog-error" class="error-box" role="alert" hidden>
+            <div class="error-title" id="err-title"></div>
+            <p class="error-hint" id="err-hint"></p>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="button" id="err-retry"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Try again</button>
+              <button class="btn" type="button" id="err-cancel">Cancel</button>
+            </div>
+          </div>
+          <div class="btn-row" id="prog-actions"><button class="btn" type="button" id="prog-cancel">Cancel</button></div>
+        </section>
+
+        <!-- Completed banner -->
+        <section id="banner-complete" class="complete" hidden aria-live="polite">
+          <span class="complete-check"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+          <div class="complete-text">
+            <strong>Translation complete</strong>
+            <span id="complete-detail"></span>
+          </div>
+          <button class="btn btn-small btn-on-green" type="button" id="btn-new">Start new translation</button>
+        </section>
+
+        <!-- Workspace -->
+        <div id="workspace" class="workspace" hidden>
+          <section class="card col" aria-labelledby="orig-title">
+            <div class="panel-head">
+              <h2 id="orig-title">Original</h2>
+              <button class="btn btn-ghost btn-small" type="button" id="btn-remove"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Remove</button>
+            </div>
+            <div id="source-meta" class="meta"></div>
+            <div id="source-media">
+              <video id="orig-video" class="orig-video" playsinline preload="metadata" hidden aria-label="Original video"></video>
+              <audio id="orig-audio" preload="metadata" hidden></audio>
+              <div id="orig-player"></div>
+              <div id="peaks-skeleton" class="skeleton skeleton-wave" hidden></div>
+            </div>
+
+            <h3 class="sub" id="transcript-label">Original transcript</h3>
+            <textarea id="transcript" class="text-area" rows="10" readonly aria-labelledby="transcript-label" placeholder="The transcript will appear here."></textarea>
+            <div class="btn-row">
+              <button class="btn btn-small" type="button" id="tr-edit"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>Edit transcript</button>
+              <button class="btn btn-small btn-primary" type="button" id="tr-save" hidden><svg class="icon" aria-hidden="true"><use href="#i-save"/></svg>Save edits</button>
+              <button class="btn btn-small" type="button" id="tr-translate"><svg class="icon" aria-hidden="true"><use href="#i-translate"/></svg>Translate</button>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-small btn-ghost" type="button" id="dl-original"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download original</button>
+              <button class="btn btn-small btn-ghost" type="button" id="dl-transcript"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download transcript</button>
+            </div>
+          </section>
+
+          <section class="card col" aria-labelledby="trans-title">
+            <div class="panel-head"><h2 id="trans-title">Translation</h2></div>
+            <h3 class="sub" id="translation-label">Translated text</h3>
+            <textarea id="translation" class="text-area" rows="10" readonly aria-labelledby="translation-label" placeholder="The translation will appear here."></textarea>
+            <div class="btn-row">
+              <button class="btn btn-small" type="button" id="tl-copy"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>Copy</button>
+              <button class="btn btn-small" type="button" id="tl-edit"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>Edit</button>
+              <button class="btn btn-small btn-primary" type="button" id="tl-save" hidden><svg class="icon" aria-hidden="true"><use href="#i-save"/></svg>Save</button>
+              <button class="btn btn-small btn-ghost" type="button" id="dl-translation"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download translation</button>
+            </div>
+
+            <h3 class="sub">Translated audio</h3>
+            <div id="voice-row" class="field" hidden>
+              <label class="field-label" for="voice-select">Voice</label>
+              <select id="voice-select"></select>
+            </div>
+            <div id="speech-notice" class="notice" hidden></div>
+            <div id="trans-player"></div>
+            <p class="hint" id="video-note" hidden>This creates a translated audio track only. It does not replace the audio inside your video.</p>
+            <div class="btn-row">
+              <button class="btn btn-small btn-primary" type="button" id="dl-audio"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download translated audio</button>
+              <button class="btn btn-small" type="button" id="make-audio" hidden><svg class="icon" aria-hidden="true"><use href="#i-cpu"/></svg>Create downloadable audio</button>
+            </div>
+            <p class="hint" id="audio-hint"></p>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ HISTORY ============ -->
+      <section id="view-history" class="view" data-view="history" aria-labelledby="history-title" hidden>
+        <div class="view-head">
+          <h1 id="history-title" class="view-title">History</h1>
+          <button class="btn btn-danger btn-small" type="button" id="history-clear"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Clear history</button>
+        </div>
+        <p class="hint">Recent translations are kept only on this device. Audio is not kept unless you turn that on in Settings.</p>
+        <div id="history-loading" class="skeleton skeleton-block" hidden></div>
+        <ul id="history-list" class="history-list"></ul>
+        <div id="history-empty" class="empty" hidden>
+          <span class="empty-ico"><svg class="icon" aria-hidden="true"><use href="#i-history"/></svg></span>
+          <h2>No translations yet</h2>
+          <p>Finished translations appear here so you can open them again.</p>
+          <a class="btn btn-primary" href="#/translate">Start a translation</a>
+        </div>
+      </section>
+
+      <!-- ============ AI MODELS ============ -->
+      <section id="view-models" class="view" data-view="models" aria-labelledby="models-title" hidden>
+        <div class="view-head"><h1 id="models-title" class="view-title">AI models</h1></div>
+        <p class="lede-sm">Models do the listening, translating and speaking on your device. Each one downloads once, then works offline. Sizes are shown before anything downloads.</p>
+        <div class="card" id="storage-card">
+          <div class="storage-line"><strong>Storage on this device</strong><span id="storage-summary">Checking…</span></div>
+          <div class="bar" id="storage-bar" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100"><div class="bar-fill" id="storage-fill"></div></div>
+        </div>
+        <div id="models-list"></div>
+        <div class="card" id="engines-card">
+          <h2>Built into this browser</h2>
+          <ul class="kv" id="engines-list"></ul>
+        </div>
+      </section>
+
+      <!-- ============ SETTINGS ============ -->
+      <section id="view-settings" class="view" data-view="settings" aria-labelledby="settings-title" hidden>
+        <div class="view-head"><h1 id="settings-title" class="view-title">Settings</h1></div>
+
+        <div class="card set-group">
+          <h2>Appearance</h2>
+          <label class="field"><span class="field-label">Theme</span>
+            <select id="set-theme"><option value="system">Match my device</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+          <label class="check"><input type="checkbox" id="set-contrast"><span>High contrast</span></label>
+          <label class="check"><input type="checkbox" id="set-largetext"><span>Larger text</span></label>
+          <label class="field"><span class="field-label">App language</span>
+            <select id="set-uilang"><option value="en">English</option></select>
+            <span class="field-help">The app is available in English for now.</span></label>
+        </div>
+
+        <div class="card set-group">
+          <h2>Languages and voice</h2>
+          <div class="lang-row">
+            <label class="field"><span class="field-label">Default source language</span><select class="js-src" aria-label="Default source language"></select></label>
+            <span class="lang-row-gap"></span>
+            <label class="field"><span class="field-label">Default target language</span><select class="js-tgt" aria-label="Default target language"></select></label>
+          </div>
+          <label class="field"><span class="field-label">Voice for the target language</span><select id="set-voice"></select>
+            <span class="field-help" id="set-voice-help"></span></label>
+          <label class="field"><span class="field-label">Playback speed</span>
+            <select id="set-speed"><option value="0.5">0.5×</option><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label>
+          <label class="field"><span class="field-label">Downloads after each translation</span>
+            <select id="set-autodownload"><option value="off">Ask me each time</option><option value="text">Save the translated text automatically</option><option value="text-audio">Save the text and the audio automatically</option></select></label>
+          <label class="check"><input type="checkbox" id="set-review"><span>Let me review the transcript before it is translated</span></label>
+        </div>
+
+        <div class="card set-group">
+          <h2>Translation and voice engines</h2>
+          <label class="field"><span class="field-label">Translation engine</span>
+            <select id="set-mt"><option value="auto">Automatic</option><option value="chrome">Browser translator (Chrome)</option><option value="opus">Compact on-device model</option><option value="nllb">NLLB-200 on-device model</option><option value="mymemory">Online service (MyMemory)</option></select></label>
+          <label class="field"><span class="field-label">Voice engine</span>
+            <select id="set-tts"><option value="auto">Automatic</option><option value="browser">Browser voices</option><option value="local">Downloaded voice model</option></select></label>
+          <label class="check"><input type="checkbox" id="set-online"><span>Allow the optional online translation service. Only the text is sent, and only when this is on.</span></label>
+          <a class="btn btn-small" href="#/models"><svg class="icon" aria-hidden="true"><use href="#i-cpu"/></svg>Manage AI models</a>
+        </div>
+
+        <div class="card set-group">
+          <h2>Protected words</h2>
+          <label class="check"><input type="checkbox" id="set-bible"><span>Keep Bible references exactly as written (for example John 3:16)</span></label>
+          <label class="check"><input type="checkbox" id="set-biblebooks"><span>Translate Bible book names, and keep only the numbers</span></label>
+          <label class="field"><span class="field-label">Church names and terms that must not be translated</span>
+            <textarea id="set-terms" rows="4" spellcheck="false"></textarea>
+            <span class="field-help">One per line.</span></label>
+          <button class="btn btn-small btn-primary" type="button" id="set-terms-save">Save terms</button>
+        </div>
+
+        <div class="card set-group">
+          <h2>Privacy and storage</h2>
+          <label class="check"><input type="checkbox" id="set-savehistory"><span>Keep a history of recent translations on this device</span></label>
+          <label class="check"><input type="checkbox" id="set-keepaudio"><span>Keep audio in history (uses more storage)</span></label>
+          <label class="check"><input type="checkbox" id="set-keeploaded"><span>Keep AI models in memory between jobs (faster, uses more memory)</span></label>
+          <p class="hint" id="persist-line"></p>
+          <div class="btn-row">
+            <button class="btn btn-small" type="button" id="btn-persist">Ask the browser to keep my data</button>
+            <button class="btn btn-small btn-danger" type="button" id="btn-clear-all"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Clear all data</button>
+            <button class="btn btn-small" type="button" id="btn-reset">Reset settings</button>
+          </div>
+        </div>
+
+        <div class="card set-group">
+          <h2>More</h2>
+          <div class="btn-row">
+            <a class="btn btn-small" href="#/models"><svg class="icon" aria-hidden="true"><use href="#i-cpu"/></svg>AI models</a>
+            <a class="btn btn-small" href="#/help"><svg class="icon" aria-hidden="true"><use href="#i-help"/></svg>Help</a>
+            <a class="btn btn-small" href="#/about"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>About and privacy</a>
+          </div>
+        </div>
+
+        <div class="card set-group">
+          <h2>App version</h2>
+          <p class="hint">Version <span id="app-version"></span></p>
+          <button class="btn btn-small" type="button" id="btn-check-update"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>Check for updates</button>
+        </div>
+      </section>
+
+      <!-- ============ HELP ============ -->
+      <section id="view-help" class="view prose" data-view="help" aria-labelledby="help-title" hidden>
+        <div class="view-head"><h1 id="help-title" class="view-title">Help</h1></div>
+        <div class="card">
+          <h2>How to translate audio</h2>
+          <ol class="steps">
+            <li><strong>Choose your audio.</strong> Upload a file, record with your microphone, or drop a file onto the Translate page.</li>
+            <li><strong>Pick the languages.</strong> Choose what is spoken, and what you want it translated into.</li>
+            <li><strong>Press Translate audio.</strong> The app transcribes, translates and prepares the voice. The first time, it asks before downloading AI models.</li>
+            <li><strong>Listen and save.</strong> Play the translation, fix any words in the text boxes, and download what you need.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h2>Common questions</h2>
+          <details><summary>Why does the app ask to download models?</summary><p>The listening, translating and speaking are done by AI models that run on your device. They are large, so the app tells you the size first. After the download they work without internet.</p></details>
+          <details><summary>Can I use a YouTube link?</summary><p>The app does not take audio from YouTube. Download or save the video in a way YouTube permits, then upload the file here.</p></details>
+          <details><summary>Does it work with WhatsApp voice notes?</summary><p>Yes. Save the voice note to your phone, then choose it with Upload file. If your browser cannot read it, convert it to MP3 or M4A first.</p></details>
+          <details><summary>Why can I not download audio for some languages?</summary><p>Browser voices can be played but not saved as a file. A downloadable voice needs a voice model. Where no voice model exists for a language, the app shows the translated text and tells you the voice is unavailable.</p></details>
+          <details><summary>Why is Igbo speech not recognised?</summary><p>The speech models used here do not include Igbo. You can still type or paste Igbo text and translate it, and Igbo can be a target language.</p></details>
+          <details><summary>The translation is not perfect.</summary><p>Automatic translation can make mistakes, especially for names and scripture. Read the result, and use Edit to correct it before you share it.</p></details>
+          <details><summary>Does a video get a translated soundtrack?</summary><p>No. The app produces a separate translated audio file. It does not replace the audio inside your video.</p></details>
+          <details><summary>Can I use it offline?</summary><p>The app itself opens offline after the first visit. Translating offline needs the models you use to be downloaded already.</p></details>
+        </div>
+        <div class="card">
+          <h2>Install on your device</h2>
+          <p>Use the Install app button when it appears. On iPhone or iPad, open the Share menu and choose Add to Home Screen. On desktop Chrome or Edge, use the install icon in the address bar.</p>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section id="view-about" class="view prose" data-view="about" aria-labelledby="about-title" hidden>
+        <div class="view-head"><h1 id="about-title" class="view-title">About and privacy</h1></div>
+        <div class="card">
+          <h2>CAC Goodworks Audio Translator</h2>
+          <p id="about-purpose"></p>
+          <p>Built for CAC Goodworks Assembly. Version <span id="about-version"></span>.</p>
+        </div>
+        <div class="card">
+          <h2>Privacy</h2>
+          <ul class="plain">
+            <li>Your audio is processed locally whenever supported. We do not intentionally upload your recordings to a third-party server.</li>
+            <li>AI model files are downloaded once from Hugging Face and the code that runs them from jsDelivr. These downloads never include your audio or text.</li>
+            <li>The online translation service is off unless you turn it on. When it is on, only the text is sent, to MyMemory.</li>
+            <li>History, settings and models are stored in this browser. Use Clear all data in Settings to remove them.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Open-source components</h2>
+          <ul class="plain">
+            <li>Whisper speech recognition (MIT) by OpenAI, run with Transformers.js (Apache-2.0).</li>
+            <li>NLLB-200 translation by Meta (CC-BY-NC-4.0, non-commercial use).</li>
+            <li>Opus-MT translation models by the Helsinki-NLP group (CC-BY-4.0).</li>
+            <li>MMS-TTS voices by Meta (CC-BY-NC-4.0, non-commercial use).</li>
+          </ul>
+          <p class="hint">Some models are licensed for non-commercial use. Use them for church and community work, not for selling a service.</p>
+        </div>
+        <div class="card" id="contact-card">
+          <h2>Contact</h2>
+          <ul class="plain" id="contact-list"></ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Bottom navigation (phones) -->
+  <nav class="bottom-nav" aria-label="Main">
+    <a href="#/home" data-nav="home"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a>
+    <a href="#/translate" data-nav="translate"><svg class="icon" aria-hidden="true"><use href="#i-translate"/></svg><span>Translate</span></a>
+    <a href="#/history" data-nav="history"><svg class="icon" aria-hidden="true"><use href="#i-history"/></svg><span>History</span></a>
+    <a href="#/settings" data-nav="settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a>
+  </nav>
+</div>
+
+<div id="toasts" class="toasts" role="region" aria-label="Messages"></div>
+<div id="sr-live" class="sr-only" aria-live="polite"></div>
+<input id="file-input" type="file" hidden aria-hidden="true" tabindex="-1">
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
