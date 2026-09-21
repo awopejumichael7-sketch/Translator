@@ -4,7 +4,7 @@ export const APP_CONFIG = {
   name: 'CAC Goodworks Audio Translator',
   shortName: 'CAC Audio Translator',
   org: 'CAC Goodworks Assembly',
-  version: '1.0.0', // keep in sync with VERSION in service-worker.js
+  version: '1.0.1', // keep in sync with VERSION in service-worker.js
   purpose: 'To help users listen to and understand spoken content across languages.',
   /* Contact details are shown on the About page. Fill these in before publishing.
      Empty values are hidden — nothing is invented. */

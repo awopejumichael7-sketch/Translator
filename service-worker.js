@@ -9,7 +9,7 @@
  * them under "AI models"), and Transformers.js keeps them in its own cache, "transformers-cache".
  */
 
-const VERSION = '1.0.0'; // keep in sync with APP_CONFIG.version in settings.js
+const VERSION = '1.0.1'; // keep in sync with APP_CONFIG.version in settings.js
 const PREFIX = 'cac-goodworks-audio-translator';
 const SHELL_CACHE = `${PREFIX}-shell-v${VERSION}`;
 const ENGINE_CACHE = `${PREFIX}-engine`; // the same name is cleared by "Clear all data" in Settings

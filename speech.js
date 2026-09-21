@@ -64,8 +64,9 @@ export async function transcribeSamples(client, model, samples, { langCode, sign
     }
     if (onChunk) onChunk(i, total, 'processing');
     const audio = samples.slice(start, end);
-    const options = { chunk_length_s: 30, task: 'transcribe', return_timestamps: false };
-    if (model.multilingual) options.language = getLang(langCode).whisper;
+    // English-only Whisper models (".en") refuse a task or language option, so those go only to multilingual models.
+    const options = { chunk_length_s: 30, return_timestamps: false };
+    if (model.multilingual) { options.task = 'transcribe'; options.language = getLang(langCode).whisper; }
     const out = await client.call('run', { task: model.task, model: model.id, audio, options }, { signal, transfer: [audio.buffer] });
     const piece = cleanPiece(out && out.text);
     if (piece) { parts.push(piece); spoken++; }
