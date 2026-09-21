@@ -8,7 +8,7 @@ export const APP_CONFIG = {
   purpose: 'To help users listen to and understand spoken content across languages.',
   /* Contact details are shown on the About page. Fill these in before publishing.
      Empty values are hidden — nothing is invented. */
-  contact: { email: 'cacgoodworks@gmail.com', phone: '09036631218', website: '', address: '' },
+  contact: { email: '', phone: '', website: '', address: '' },
   /* Set to false to remove the optional online translation service (MyMemory) from the app completely. */
   enableOnlineTranslation: true,
 };
