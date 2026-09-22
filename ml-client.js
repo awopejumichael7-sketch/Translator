@@ -12,9 +12,9 @@ function mapWorkerError(m) {
       hint: 'Internet connection required for this processing method (needed once, then it works offline).',
     });
   }
-  if (code === 'NETWORK' || /failed to fetch|networkerror|load failed|network request failed|could not locate file/i.test(msg)) {
-    return new AppError('NETWORK', 'Internet connection required to download this model.', {
-      hint: 'Connect to the internet once to download it. After that it works offline.',
+  if (code === 'NETWORK' || /failed to fetch|network\s*error|load failed|network request failed|could not locate file|err_network|err_connection|err_internet|timed? ?out|connection (?:was )?(?:reset|closed|refused)/i.test(msg)) {
+    return new AppError('NETWORK', 'The download was interrupted.', {
+      hint: 'This can happen on a slow or unstable connection — some of these files are large. Try Wi-Fi if you can, then press Try again. Once a model finishes downloading it is kept, so this only has to succeed once.',
     });
   }
   if (code === 'OOM' || /out of memory|allocation|bad_alloc|memory access out of bounds|aborted\(\)/i.test(msg)) {
